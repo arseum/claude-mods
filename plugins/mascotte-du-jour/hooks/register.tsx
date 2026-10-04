@@ -194,7 +194,7 @@ async function chooseTheme($: EngineInterface, previous: Daily | null) {
 
   let choice: Daily | null = null
   try {
-    const reply = await $.model.complete({ model: 'opus', prompt, maxTokens: 300, effort: 'low' })
+    const reply = await $.model.complete({ model: 'sonnet', prompt, maxTokens: 300, effort: 'low' })
     if (reply.isAnswered) choice = parseChoice(reply.text, date)
   } catch {
     choice = null

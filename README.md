@@ -51,7 +51,7 @@ In French, the command is `/mascotte` (`rechoisir`, `son on|off`).
 
 ### Good to know
 
-- **Cost**: once a day, the mod makes one small call to Claude (Opus, low effort) to pick the theme. Without an answer, it picks a theme at random.
+- **Cost**: once a day, the mod makes one small call to Claude (Sonnet, low effort) to pick the theme. Without an answer, it picks a theme at random.
 - **Compatibility**: this is a *mod* (a plugin of function hooks): it needs a recent Claude Code version that supports mods. Developed and tested on Claude Code 2.1.287.
 - Several open sessions share the same theme of the day.
 

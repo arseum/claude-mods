@@ -51,7 +51,7 @@ En anglais, la commande s'appelle `/mascot` (`reroll`, `sound on|off`).
 
 ### Bon à savoir
 
-- **Coût** : une fois par jour, le mod fait un petit appel à Claude (Opus, effort faible) pour choisir le thème. Sans réponse, il tire un thème au sort.
+- **Coût** : une fois par jour, le mod fait un petit appel à Claude (Sonnet, effort faible) pour choisir le thème. Sans réponse, il tire un thème au sort.
 - **Compatibilité** : c'est un *mod* (un plugin de hooks en fonctions) : il faut une version récente de Claude Code qui gère les mods. Développé et testé sur Claude Code 2.1.287.
 - Plusieurs sessions ouvertes partagent le même thème du jour.
 
