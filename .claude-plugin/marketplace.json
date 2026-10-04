@@ -1,0 +1,20 @@
+{
+  "name": "claude-mods",
+  "owner": { "name": "amaitre", "email": "maitrearsene213@gmail.com" },
+  "metadata": {
+    "description": "Fun mods for Claude Code by amaitre / Des mods fun pour Claude Code",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "mascotte-du-jour",
+      "source": "./plugins/mascotte-du-jour",
+      "description": "An animated pixel-art Claude mascot above your prompt, with a theme of the day picked by Claude itself",
+      "version": "1.0.0",
+      "author": { "name": "amaitre", "email": "maitrearsene213@gmail.com" },
+      "license": "MIT",
+      "keywords": ["mascot", "pixel-art", "animation", "fun", "mod"],
+      "category": "fun"
+    }
+  ]
+}

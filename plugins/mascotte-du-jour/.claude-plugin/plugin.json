@@ -1,0 +1,33 @@
+{
+  "name": "mascotte-du-jour",
+  "version": "1.0.0",
+  "description": "An animated pixel-art Claude mascot above your prompt, with a theme of the day picked by Claude itself / Une mascotte Claude animée en pixel art au-dessus du prompt, avec un thème du jour choisi par Claude",
+  "types": "./types/index.d.ts",
+  "author": {
+    "name": "amaitre",
+    "email": "maitrearsene213@gmail.com"
+  },
+  "homepage": "https://github.com/arseum/claude-mods",
+  "repository": "https://github.com/arseum/claude-mods",
+  "license": "MIT",
+  "keywords": [
+    "mascot",
+    "pixel-art",
+    "animation",
+    "fun",
+    "mod"
+  ],
+  "userConfig": {
+    "language": {
+      "type": "string",
+      "title": "Language / Langue",
+      "description": "Mascot language: auto follows Claude Code's language setting / Langue de la mascotte : auto suit la langue de Claude Code",
+      "default": "auto",
+      "options": [
+        "auto",
+        "fr",
+        "en"
+      ]
+    }
+  }
+}
