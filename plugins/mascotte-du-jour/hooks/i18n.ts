@@ -236,6 +236,7 @@ const MESSAGES = {
   web: { fr: 'cherche sur le web', en: 'searches the web' },
   agent: { fr: 'envoie des renforts', en: 'sends reinforcements' },
   echec: { fr: 'aïe, une erreur…', en: 'ouch, an error…' },
+  commit: { fr: 'commit réussi !', en: 'commit landed!' },
   fete: { fr: 'Terminé !', en: 'Done!' },
   triste: { fr: 'le tour a échoué…', en: 'the turn failed…' },
 } as const

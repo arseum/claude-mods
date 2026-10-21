@@ -104,6 +104,16 @@ export const dance: Theme = {
     discoBall(c, DISCO_X, t, true)
   },
   sky: 'own',
+  // La fête : une toupie sous la boule à facettes, puis un grand saut, et des notes partout.
+  cheer: (c, t) => {
+    const k = t % 2
+    const isSpinning = k < 1.3
+    const width = isSpinning ? Math.max(4, Math.round(BODY_W * Math.abs(Math.cos(t * 9)))) : BODY_W
+    const air = isSpinning ? 0 : Math.sin(((k - 1.3) / 0.7) * Math.PI)
+    const pose = { x: centerX(c) + Math.round((BODY_W - width) / 2), y: BASE_Y - Math.round(air * 3), width, arms: [80, 80] as const, eyes: isSpinning && width < 10 ? ('none' as const) : ('happy' as const) }
+    drawClawd(c, pose)
+    floatingNotes(c, t, centerX(c) + 8, 6)
+  },
   specials: [newYear],
 
   idle: {

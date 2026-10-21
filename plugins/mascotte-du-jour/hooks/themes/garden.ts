@@ -99,6 +99,17 @@ export const gardenTheme: Theme = {
   dress: (c, pose) => gardener(c, pose),
   scene: c => garden(c),
   sky: 'open',
+  // La fête : tout le jardin fleurit d'un coup, et les papillons arrivent.
+  cheer: (c, t) => {
+    const colors = [0xf472b6, 0xfde047, 0xa78bfa, 0xf97316, 0x60a5fa]
+    const growth = Math.min(1, (t % 6) * 1.5)
+    for (let i = 0; i < c.w / 6; i++) {
+      const fx = i * 6 + 2
+      if (Math.abs(fx - (centerX(c) + 8)) > 11) flower(c, fx, t, Math.min(1, Math.max(0, growth * 1.6 - (i % 3) * 0.3)), colors[i % colors.length]!, 4 + (i % 3))
+    }
+    for (let i = 0; i < 2; i++) butterfly(c, centerX(c) + 8 + Math.cos(t * 1.5 + i * 3) * 16, 3 + Math.sin(t * 2.2 + i) * 2, t, colors[i + 2]!)
+    gardener(c, { x: centerX(c), y: BASE_Y - Math.round(hop((t * 1.6) % 1) * 3), arms: [80, 80], eyes: 'happy' })
+  },
   specials: [valentine],
 
   idle: {

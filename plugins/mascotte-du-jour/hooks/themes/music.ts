@@ -86,6 +86,18 @@ export const musicTheme: Theme = {
   dress: (c, pose) => headphones(c, pose),
   scene: c => stage(c),
   sky: 'own',
+  // La fête : le moulin à vent à la guitare, sous deux projecteurs qui se croisent, et le public en délire.
+  cheer: (c, t) => {
+    const sweep = Math.sin(t * 2) * 12
+    spotlight(c, 6, centerX(c) + 8 + sweep, 0xfde68a)
+    spotlight(c, c.w - 6, centerX(c) + 8 - sweep, 0xf9a8d4)
+    const windmill = (t * 540) % 360
+    const pose: Pose = { x: centerX(c), y: BASE_Y - Math.round(hop((t * 2) % 1) * 2), arms: [-20, windmill], eyes: 'happy' }
+    headphones(c, pose)
+    guitar(c, pose)
+    floatingNotes(c, t, centerX(c) + 8, 5)
+    crowd(c, t * 2)
+  },
   specials: [musicDay],
 
   idle: {

@@ -84,6 +84,17 @@ export const halloweenTheme: Theme = {
   dress: (c, pose) => drawClawd(c, pose),
   scene: c => night(c),
   sky: 'own',
+  // La fête : les citrouilles s'allument et des petits fantômes font la ronde autour de lui.
+  cheer: (c, t) => {
+    pumpkin(c, 3, t, true)
+    pumpkin(c, c.w - 10, t, true)
+    for (let i = 0; i < 2; i++) {
+      const a = t * 2 + i * Math.PI
+      if (Math.sin(a) < 0.3) ghost(c, centerX(c) + 5 + Math.cos(a) * 20, 3 + Math.sin(a) * 2, t + i, 6)
+    }
+    const air = hop((t * 1.8) % 1)
+    drawClawd(c, { x: centerX(c), y: BASE_Y - Math.round(air * 3), arms: [80, 80], eyes: 'happy' })
+  },
   specials: [halloweenNight],
 
   idle: {

@@ -81,6 +81,18 @@ export const cookingTheme: Theme = {
   dress: (c, pose) => chef(c, pose),
   scene: c => floor(c),
   sky: 'window',
+  // La fête : la crêpe sautée si haut qu'elle tourne trois fois avant de retomber dans la poêle.
+  cheer: (c, t) => {
+    const k = (t % 1.6) / 1.6
+    const pose: Pose = { x: centerX(c) - 6, y: BASE_Y, arms: [-40, k < 0.1 ? 30 : 0], eyes: 'happy', look: 2 }
+    chef(c, pose)
+    const h = hand(pose, 1)
+    c.rect(h.x + 1, h.y, 6, 1, PAN)
+    const flip = Math.floor(k * 12) % 2
+    const cy = h.y - 1 - Math.round(hop(k) * (h.y - 1))
+    c.rect(h.x + 2, cy, flip ? 4 : 2, flip ? 1 : 2, 0xfbbf24)
+    if (k > 0.9) sparkles(c, t, h.x + 4, h.y - 2, 3, 0xfef3c7, 4)
+  },
   specials: [chandeleur],
 
   idle: {

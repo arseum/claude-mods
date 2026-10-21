@@ -70,6 +70,21 @@ export const winterTheme: Theme = {
   dress: (c, pose, t) => bundled(c, pose, t),
   scene: (c, t) => winter(c, t),
   sky: 'open',
+  // La fête : il lance une gerbe de neige en l'air, qui retombe en scintillant.
+  cheer: (c, t) => {
+    const k = (t % 1.5) / 1.5
+    const pose: Pose = { x: centerX(c), y: BASE_Y - Math.round(hop(k) * 2), arms: k < 0.3 ? [-20, -20] : [85, 85], eyes: 'happy' }
+    bundled(c, pose, t)
+    const left = hand(pose, -1)
+    const right = hand(pose, 1)
+    for (let i = 0; i < 14; i++) {
+      const from = i % 2 ? right : left
+      const life = (t * 0.9 + i / 14) % 1
+      const sx = from.x + (noise(i) - 0.5) * 26 * life
+      const sy = from.y - Math.sin(life * Math.PI) * 6 + life * 8
+      if (sy < GROUND) c.dot(sx, sy, i % 4 === 0 ? ICE : SNOW)
+    }
+  },
   specials: [christmas],
 
   idle: {

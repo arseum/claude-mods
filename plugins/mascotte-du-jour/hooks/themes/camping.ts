@@ -79,6 +79,19 @@ export const campingTheme: Theme = {
   dress: (c, pose) => hiker(c, pose),
   scene: c => forest(c),
   sky: 'open',
+  // La fête : une danse autour d'un grand feu de camp, et des étincelles qui montent.
+  cheer: (c, t) => {
+    const fx = centerX(c) + 8
+    campfire(c, fx, t)
+    campfire(c, fx, t + 0.3)
+    for (let i = 0; i < 6; i++) {
+      const life = (t * 0.9 + i / 6) % 1
+      c.dot(fx + Math.sin(life * 7 + i) * 2, GROUND - 7 - life * 8, mix(0xfde047, 0xdc2626, life))
+    }
+    const swing = Math.sin(t * 2.5)
+    const air = hop((t * 2.5) % 1)
+    hiker(c, { x: fx - 8 + Math.round(swing * 18) - 8, y: BASE_Y - Math.round(air * 2), arms: [80, swing > 0 ? 40 : 80], legs: walkLegs(t, 6), eyes: 'happy', look: swing > 0 ? 2 : -2 })
+  },
 
   idle: {
     id: 'bivouac',

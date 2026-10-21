@@ -1,6 +1,6 @@
 // Les activités communes à tous les thèmes : ce que fait le personnage pendant
 // que Claude lit, écrit, lance une commande, cherche sur le web ou envoie des
-// renforts, et ses réactions (une erreur, la fin d'un long tour). Chaque thème
+// renforts, et ses réactions (une erreur, un commit réussi, la fin d'un long tour). Chaque thème
 // y met son costume et son décor ; les accessoires restent près du sol pour
 // rester visibles en mini.
 
@@ -10,11 +10,20 @@ import { BASE_Y, centerX, falling, hop, sparkles, sprite, walkLegs } from './the
 import { type Lang, t } from './i18n'
 import { type Anim, GROUND, type Theme } from './themes/theme'
 
-export type Activity = 'lire' | 'ecrire' | 'commande' | 'web' | 'agent' | 'echec' | 'fete' | 'triste'
+export type Activity = 'lire' | 'ecrire' | 'commande' | 'web' | 'agent' | 'echec' | 'commit' | 'fete' | 'triste'
 
 // Les réactions passent avant tout le reste, même quand Claude ne travaille plus.
-export const isReaction = (a: Activity) => a === 'fete' || a === 'triste'
+export const isReaction = (a: Activity) => a === 'commit' || a === 'fete' || a === 'triste'
 
+// Un `git commit` réussi (la commande n'a pas échoué) qui a vraiment créé un commit : git
+// l'annonce par « [branche abc1234] message », sauf en --quiet où il ne dit rien.
+// Ni un --dry-run, ni un `git log` qui parle de commits.
+export function isCommit(command: unknown, output: unknown): boolean {
+  if (typeof command !== 'string') return false
+  const call = command.match(/\bgit\b[^|;&\n]*\bcommit\b[^|;&\n]*/)?.[0]
+  if (call === undefined || /--dry-run\b/.test(call)) return false
+  return (typeof output === 'string' && /^\[[^\]\n]+ [0-9a-f]{7,40}\]/m.test(output)) || /\s(-[a-zA-Z]*q[a-zA-Z]*|--quiet)\b/.test(call)
+}
 
 // L'activité d'un appel d'outil, ou null pour un outil qui ne se voit pas (une liste de tâches…).
 export function activityOf(tool: string): Activity | null {
@@ -152,6 +161,26 @@ const oops = (c: Canvas, t: number, theme: Theme) => {
   }
 }
 
+// Un commit réussi : un petit graphe git où un nouveau nœud vert apparaît, et un saut de joie.
+const commit = (c: Canvas, t: number, theme: Theme) => {
+  const x = leftX(c)
+  const air = hop((t * 1.4) % 1)
+  theme.dress(c, { x, y: BASE_Y - Math.round(air * 2), arms: [-40, 80], eyes: 'happy', look: 2 }, t)
+  const gx = x + 22
+  const gy = GROUND - 6
+  c.line(gx, gy, gx + 12, gy, INK)
+  for (let i = 0; i < 3; i++) c.disc(gx + i * 4, gy, 1.3, INK)
+  // Le nouveau nœud gonfle, avec un éclat autour, toutes les 2,5 s.
+  const k = (t % 2.5) / 2.5
+  c.disc(gx + 12, gy, 0.6 + Math.min(1, k * 4) * 1.1, 0x4ade80)
+  if (k < 0.5) {
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2
+      c.dot(gx + 12 + Math.cos(a) * (2 + k * 6), gy + Math.sin(a) * (2 + k * 6) * 0.7, mix(0xbbf7d0, 0x14532d, k * 2))
+    }
+  }
+}
+
 // Des confettis, des sauts de joie et des étincelles.
 const party = (c: Canvas, t: number, theme: Theme) => {
   falling(c, t, { count: 30, speed: 7, color: CONFETTI[0]!, sway: 1, colors: CONFETTI })
@@ -172,6 +201,7 @@ const DRAWS: Readonly<Record<Activity, (c: Canvas, t: number, theme: Theme) => v
   web,
   agent: agents,
   echec: oops,
+  commit,
   fete: party,
   triste: oops,
 }
@@ -182,7 +212,8 @@ export const activityAnim = (activity: Activity, theme: Theme, lang: Lang = 'fr'
   name: t(lang, activity),
   draw: (c, t) => {
     backdrop(c, t, theme)
-    DRAWS[activity](c, t, theme)
+    if (activity === 'fete' && theme.cheer) theme.cheer(c, t)
+    else DRAWS[activity](c, t, theme)
   },
 })
 

@@ -78,6 +78,20 @@ export const ninjaTheme: Theme = {
   dress: (c, pose, t) => ninja(c, pose, t),
   scene: (c, t) => rooftop(c, t, 5),
   sky: 'open',
+  // La fête : il disparaît et réapparaît d'un bout à l'autre dans des bouffées de fumée et de pétales.
+  cheer: (c, t) => {
+    const spots = [centerX(c) - 14, centerX(c) + 14, centerX(c)]
+    const period = 0.9
+    const i = Math.floor(t / period) % spots.length
+    const k = (t % period) / period
+    const x = spots[i]!
+    if (k > 0.25) ninja(c, { x, y: BASE_Y - Math.round(hop((k - 0.25) / 0.75) * 3), arms: [80, 80], eyes: 'happy' }, t)
+    if (k < 0.5) smoke(c, x + 8, BASE_Y + 5, k * 2)
+    for (let p = 0; p < 8; p++) {
+      const a = (p / 8) * Math.PI * 2
+      c.dot(x + 8 + Math.cos(a) * (3 + k * 9), BASE_Y + 4 + Math.sin(a) * (2 + k * 5), PETALS[p % 2]!)
+    }
+  },
 
   idle: {
     id: 'meditation',

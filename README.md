@@ -13,7 +13,8 @@ An animated pixel-art Claude mascot that lives above your prompt. **Every day, C
 - **18 themes**, each with an idle pose and 5 animations: Dance, Space, Pirate, Wizard, Cooking, Music, Halloween, Ocean, Winter, Garden, Sport, Arcade, Wild West, Dinosaurs, Knight, Ninja, Camping, Superhero.
 - **Variety**: the themes of the last 7 days take a rest, so Claude picks another one (except on a special day).
 - **Reacts to what Claude is doing**: reads a book while Claude reads files, types on a laptop while it edits, watches a terminal during commands, spins a globe during web searches, sends little clones when subagents run, and looks disappointed after repeated errors.
-- **A small celebration** (confetti and an optional chiptune sound) at the end of turns longer than 2 minutes.
+- **A small celebration in each theme's own style** at the end of turns longer than 2 minutes (the cowboy throws his hat, the ninja vanishes in smoke, the garden bursts into bloom…), with an optional chiptune sound.
+- **Every successful `git commit` gets celebrated**, even when a subagent makes it.
 - **Progress line**: `▶ writes code · 6 min · 23 actions`.
 - **The sky follows the time of day**: rising sun, setting sun, then the moon and stars at night.
 - **Special days** with exclusive animations: Halloween, Christmas, New Year, Candlemas, Valentine's Day, April Fools' Day, Music Day, Bastille Day.

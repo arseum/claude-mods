@@ -53,6 +53,20 @@ export const space: Theme = {
     moonGround(c)
   },
   sky: 'own',
+  // La fête : un tour de jetpack, et des étoiles filantes.
+  cheer: (c, t) => {
+    for (let i = 0; i < 3; i++) {
+      const life = (t * 0.9 + i / 3) % 1
+      const sx = c.w - life * (c.w + 10)
+      const sy = 1 + i * 2 + life * 3
+      for (let k = 0; k < 4; k++) c.set(sx + k, sy - k * 0.3, mix(0xfef9c3, 0x334155, k / 4))
+    }
+    const x = centerX(c) + Math.round(Math.sin(t * 1.5) * 10)
+    const y = BASE_Y - 3 + Math.round(Math.sin(t * 3) * 1.5)
+    const pose: Pose = { x, y, arms: [80, 80], legs: [1, 1, 1, 1], lean: Math.round(Math.cos(t * 1.5) * 2), eyes: 'happy' }
+    withAntenna(c, pose, t)
+    flames(c, x, y + FIGURE_H, t)
+  },
 
   idle: {
     id: 'flotte',

@@ -41,6 +41,22 @@ export const sportTheme: Theme = {
   dress: (c, pose) => athlete(c, pose),
   scene: c => pitch(c),
   sky: 'open',
+  // La fête : il soulève le trophée à deux mains sous une pluie de confettis.
+  cheer: (c, t) => {
+    falling(c, t, { count: 22, speed: 7, color: 0xfde047, sway: 1, colors: [0xfde047, 0xf8fafc, 0x22c55e, 0x60a5fa] })
+    const air = hop((t * 1.4) % 1)
+    const pose: Pose = { x: centerX(c) - 6, y: BASE_Y - Math.round(air * 2), arms: [80, 35], eyes: 'happy', look: 2 }
+    athlete(c, pose)
+    const right = hand(pose, 1)
+    const cx = right.x + 1
+    const ty = right.y - 5
+    c.rect(cx - 2, ty, 4, 3, 0xfacc15)
+    c.set(cx - 3, ty, 0xfacc15)
+    c.set(cx + 2, ty, 0xfacc15)
+    c.rect(cx - 1, ty + 3, 2, 2, 0xca8a04)
+    c.set(cx - 1, ty + 1, 0xfef9c3)
+    sparkles(c, t, cx, ty + 1, 4, 0xfef9c3, 3)
+  },
 
   idle: {
     id: 'echauffement',

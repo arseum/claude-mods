@@ -46,6 +46,18 @@ export const pirateTheme: Theme = {
   dress: (c, pose) => pirate(c, pose),
   scene: c => deck(c),
   sky: 'open',
+  // La fête : le coffre ouvert et une pluie de pièces d'or.
+  cheer: (c, t) => {
+    const cx = centerX(c) + 18
+    sprite(c, cx, GROUND - 5, CHEST, CHEST_COLORS)
+    for (let i = 0; i < 10; i++) {
+      const life = (t * 1.1 + i / 10) % 1
+      const coinX = cx + 4 + (noise(i) - 0.5) * 30 * life
+      c.rect(coinX, GROUND - 6 - hop(life) * 9, Math.floor(t * 6 + i) % 2 ? 2 : 1, 2, GOLD)
+    }
+    const air = hop((t * 1.8) % 1)
+    pirate(c, { x: centerX(c) - 10, y: BASE_Y - Math.round(air * 3), arms: [80, 80], eyes: 'happy', look: 2 })
+  },
 
   idle: {
     id: 'barre',

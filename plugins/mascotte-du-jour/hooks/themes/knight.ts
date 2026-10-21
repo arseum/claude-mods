@@ -141,6 +141,20 @@ export const knightTheme: Theme = {
   dress: (c, pose) => knight(c, pose),
   scene: c => lawn(c),
   sky: 'open',
+  // La fête : l'épée brandie, l'étendard qui claque au vent, des étincelles d'or.
+  cheer: (c, t) => {
+    const air = hop((t * 1.6) % 1)
+    const pose: Pose = { x: centerX(c), y: BASE_Y - Math.round(air * 2), arms: [-10, 88], eyes: 'happy' }
+    knight(c, pose)
+    const tip = sword(c, pose, 90, 6)
+    sparkles(c, t, tip.x, tip.y, 4, GOLD, 5)
+    // L'étendard dans l'autre main.
+    const h = hand(pose, -1)
+    c.line(h.x, GROUND - 1, h.x, 2, WOOD)
+    const wave = Math.floor(t * 6) % 2
+    c.rect(h.x - 6, 2 + wave, 6, 4, PLUME)
+    c.rect(h.x - 4, 3 + wave, 2, 2, GOLD)
+  },
   specials: [bastilleDay],
 
   idle: {

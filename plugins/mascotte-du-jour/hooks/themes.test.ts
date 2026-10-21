@@ -76,3 +76,7 @@ test('aux finesses intermédiaires (1,25 et 1,5), chaque animation remplit exact
     }
   }
 })
+
+test('chaque thème a sa propre fête de fin de tour', () => {
+  expect(THEMES.filter(theme => theme.cheer === undefined).map(theme => theme.id)).toEqual([])
+})

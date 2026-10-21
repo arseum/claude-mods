@@ -87,6 +87,16 @@ export const westernTheme: Theme = {
   dress: (c, pose) => cowboy(c, pose),
   scene: c => desert(c),
   sky: 'open',
+  // La fête : il lance son chapeau, qui tournoie en boomerang et revient se poser sur sa tête.
+  cheer: (c, t) => {
+    const k = (t % 1.8) / 1.8
+    const pose: Pose = { x: centerX(c) - 6, y: BASE_Y - Math.round(hop(k) * 2), arms: [80, k < 0.15 || k > 0.85 ? 80 : 30], eyes: 'happy', look: 2 }
+    drawClawd(c, pose)
+    const { cx, top } = crown(pose)
+    const arc = Math.sin(k * Math.PI)
+    sprite(c, cx - 7 + Math.round(arc * 20), top - 4 + Math.round(arc * 3), HAT, HAT_COLORS, k > 0.2 && k < 0.8 && Math.floor(t * 8) % 2 === 0)
+    if (k > 0.85) sparkles(c, t, cx, top - 2, 9, GOLD, 4)
+  },
 
   idle: {
     id: 'virevoltant',

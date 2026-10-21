@@ -2,7 +2,7 @@ import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register } from 'claude-code'
 
 import type { Daily } from '../types'
-import { type Activity, activityAnim, activityOf, isReaction } from './activities'
+import { type Activity, activityAnim, activityOf, isCommit, isReaction } from './activities'
 import { Canvas } from './canvas'
 import { type Lang, langOf, t, themeText } from './i18n'
 import { setMini } from './clawd'
@@ -65,6 +65,7 @@ const ERRORS_FOR_OOPS = 2
 const LONG_TURN_MS = 120_000
 const PARTY_MS = 6_000
 const SAD_MS = 5_000
+const COMMIT_MS = 4_000
 const SOUND_KEY = 'sound'
 const PARTY_SOUND = 'sounds/fete.wav'
 const WEEKDAYS = {
@@ -317,7 +318,12 @@ function settle($: EngineInterface) {
   })
 }
 
-// Une réaction (fête, tristesse) passe devant tout, puis s'efface d'elle-même.
+// Ce qui tourne encore : un outil de la boucle principale, sinon des renforts, sinon rien.
+const stillRunning = (): Activity | null =>
+  [...tracking.inFlight].find(([kind, n]) => kind !== 'agent' && n > 0)?.[0] ?? ((tracking.inFlight.get('agent') ?? 0) > 0 ? 'agent' : null)
+
+// Une réaction (commit, fête, tristesse) passe devant tout, puis s'efface d'elle-même
+// pour rendre la main à ce qui tourne encore.
 async function react($: EngineInterface, reaction: Activity, ms: number) {
   const generation = ++tracking.reactionGeneration
   tracking.wantGeneration++
@@ -325,8 +331,8 @@ async function react($: EngineInterface, reaction: Activity, ms: number) {
   await show($, reaction)
   $.clock.after(ms, () => {
     if (generation !== tracking.reactionGeneration || tracking.shown !== reaction) return
-    tracking.wanted = null
-    void show($, null)
+    tracking.wanted = stillRunning()
+    void show($, tracking.wanted)
   })
 }
 
@@ -477,7 +483,12 @@ export const register: Register = (on, options) => {
   on('tool.call', async ($, e, next) => {
     tracking.actions += 1
     const kind = e.agentId === undefined ? activityOf(e.tool) : null
-    if (kind === null) return next(e)
+    // Un commit se fête même quand c'est un sous-agent qui le fait.
+    if (kind === null) {
+      const result = await next(e)
+      if (e.tool === 'Bash' && result.isError !== true && isCommit((e as { command?: unknown }).command, result.text)) await react($, 'commit', COMMIT_MS)
+      return result
+    }
     tracking.starts += 1
     tracking.inFlight.set(kind, (tracking.inFlight.get(kind) ?? 0) + 1)
     await want($, kind)
@@ -489,6 +500,7 @@ export const register: Register = (on, options) => {
         tracking.errorStreak = 0
         await want($, 'echec')
       }
+      if (e.tool === 'Bash' && result.isError !== true && isCommit((e as { command?: unknown }).command, result.text)) await react($, 'commit', COMMIT_MS)
       return result
     } finally {
       tracking.inFlight.set(kind, Math.max(0, (tracking.inFlight.get(kind) ?? 1) - 1))

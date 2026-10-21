@@ -67,6 +67,17 @@ export const heroTheme: Theme = {
   dress: (c, pose, t) => hero(c, pose, t),
   scene: c => city(c),
   sky: 'open',
+  // La fête : un looping au-dessus de la ville, avec une traînée d'étoiles.
+  cheer: (c, t) => {
+    const a = t * 3
+    const x = centerX(c) + Math.round(Math.cos(a) * 12)
+    const y = BASE_Y - 3 + Math.round(Math.sin(a) * 2)
+    for (let k = 1; k < 6; k++) {
+      const b = a - k * 0.35
+      sparkles(c, t + k, centerX(c) + 8 + Math.cos(b) * 12, BASE_Y + 3 + Math.sin(b) * 2, 1, EMBLEM, 1)
+    }
+    hero(c, { x, y, arms: [85, 85], legs: [2, 2, 2, 2], eyes: 'happy', look: Math.sin(a) > 0 ? -2 : 2 }, t, Math.sin(a) > 0 ? 1 : -1, 0.9)
+  },
 
   idle: {
     id: 'pose-heroique',

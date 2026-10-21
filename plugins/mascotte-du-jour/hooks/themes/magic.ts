@@ -52,6 +52,25 @@ export const magicTheme: Theme = {
   dress: (c, pose) => wizard(c, pose),
   scene: (c, t) => starfield(c, t, 0.3, 12),
   sky: 'own',
+  // La fête : un feu d'artifice qui jaillit de la baguette.
+  cheer: (c, t) => {
+    const pose: Pose = { x: centerX(c) - 8, y: BASE_Y - Math.round(hop((t * 1.5) % 1) * 2), arms: [-30, 80], eyes: 'happy', look: 2 }
+    wizard(c, pose)
+    const tip = wand(c, pose, 80, t)
+    for (let i = 0; i < 3; i++) {
+      const life = (t * 0.8 + i / 3) % 1
+      const bx = tip.x + 6 + i * 9
+      const by = 3 + (i % 2) * 2
+      if (life < 0.3) c.dot(lerp(tip.x, bx, life / 0.3), lerp(tip.y, by, life / 0.3), 0xfef3c7)
+      else {
+        const k = (life - 0.3) / 0.7
+        for (let p = 0; p < 8; p++) {
+          const a = (p / 8) * Math.PI * 2
+          c.set(bx + Math.cos(a) * k * 6, by + Math.sin(a) * k * 4 + k * k, mix(MAGIC[(i + p) % MAGIC.length]!, 0x1e1b4b, Math.max(0, k - 0.6)))
+        }
+      }
+    }
+  },
 
   idle: {
     id: 'medite',

@@ -26,6 +26,9 @@ export type Theme = {
   // Ce que l'heure ajoute au ciel : soleil ou lune (`open`), une fenêtre en
   // coin (`window`, en intérieur) ou rien (`own`, le thème a déjà son ciel).
   sky: 'open' | 'window' | 'own'
+  // La fête de fin de long tour à la façon du thème, jouée sur son décor ; les
+  // confettis communs sinon. Elle dure 6 s : elle doit se lire en moins de 2.
+  cheer?: Draw
   specials?: readonly Special[]
 }
 

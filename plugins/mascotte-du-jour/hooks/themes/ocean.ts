@@ -83,6 +83,23 @@ export const oceanTheme: Theme = {
   },
   scene: (c, t) => seabed(c, t),
   sky: 'own',
+  // La fête : un geyser de bulles le soulève, et les poissons font la ronde.
+  cheer: (c, t) => {
+    const x = centerX(c)
+    const lift = (Math.sin(t * 3) + 1) / 2
+    const y = BASE_Y - 1 - Math.round(lift * 3)
+    for (let i = 0; i < 14; i++) {
+      const life = (t * 2 + i / 14) % 1
+      c.dot(x + 8 + Math.sin(i * 2.3 + t * 5) * 5, GROUND - life * (GROUND - y), i % 3 ? 0xbae6fd : 0xe0f2fe)
+    }
+    for (let i = 0; i < 4; i++) {
+      const a = t * 1.8 + (i / 4) * Math.PI * 2
+      fish(c, x + 7 + Math.cos(a) * 20, 6 + Math.sin(a) * 4, FISH[i]!, Math.sin(a) > 0 ? -1 : 1)
+    }
+    const pose: Pose = { x, y, arms: [80, 80], legs: [1, 1, 1, 1], eyes: 'happy' }
+    drawClawd(c, pose)
+    snorkel(c, pose, t)
+  },
   specials: [aprilFool],
 
   idle: {

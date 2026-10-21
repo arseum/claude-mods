@@ -60,6 +60,19 @@ export const arcadeTheme: Theme = {
   dress: (c, pose) => capped(c, pose),
   scene: c => bricks(c),
   sky: 'open',
+  // La fête : un tuyau vert crache des pièces en gerbe, et le score grimpe.
+  cheer: (c, t) => {
+    const x = centerX(c) - 8
+    const px = x + 24
+    c.rect(px, GROUND - 4, 6, 4, 0x16a34a)
+    c.rect(px - 1, GROUND - 6, 8, 2, 0x22c55e)
+    for (let i = 0; i < 6; i++) {
+      const life = (t * 1.2 + i / 6) % 1
+      coin(c, px + 3 + (i % 2 ? 1 : -1) * life * (6 + i * 2), GROUND - 7 - hop(life) * 7, t + i)
+    }
+    capped(c, { x, y: BASE_Y - Math.round(hop((t * 1.6) % 1) * 3), arms: [88, 88], eyes: 'happy', look: 2 })
+    score(c, Math.floor(t * 4) % 12 + 1)
+  },
 
   idle: {
     id: 'insert-coin',

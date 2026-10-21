@@ -93,6 +93,20 @@ export const dinoTheme: Theme = {
   dress: (c, pose) => dinoSuit(c, pose),
   scene: c => prehistory(c),
   sky: 'open',
+  // La fête : le volcan crache des confettis, et il danse avec le bébé dino.
+  cheer: (c, t) => {
+    volcano(c, c.w - 12, 6, 1)
+    const colors = [0xf472b6, 0x67e8f9, 0xfde047, 0xa3e635, 0xc084fc]
+    for (let i = 0; i < 16; i++) {
+      const life = (t * 0.8 + i / 16) % 1
+      const lx = c.w - 12 + (noise(i) - 0.5) * 34 * life
+      const ly = 6 - Math.sin(life * Math.PI) * 6 + life * 8
+      if (ly < GROUND) c.dot(lx, ly, colors[i % colors.length]!)
+    }
+    const air = hop((t * 2) % 1)
+    dinoSuit(c, { x: centerX(c) - 10, y: BASE_Y - Math.round(air * 3), arms: [80, 80], eyes: 'happy', look: 2 })
+    sprite(c, centerX(c) + 10, GROUND - 5 - Math.round(hop((t * 2 + 0.5) % 1) * 3), BABY, { g: 0xa3e635, k: 0x1c1917 }, true)
+  },
 
   idle: {
     id: 'brontosaure',
