@@ -136,6 +136,68 @@ const THEMES_EN: Readonly<Record<string, string>> = {
   'Chocolat chaud': 'Hot chocolate',
   Noël: 'Christmas',
   'Joyeux Noël !': 'Merry Christmas!',
+  // Far West
+  'Far West': 'Wild West',
+  'un chapeau de cow-boy, un lasso, un duel à midi avec des virevoltants, un rodéo, la ruée vers l’or, un harmonica au coin du feu':
+    'a cowboy hat, a lasso, a high-noon duel with tumbleweeds, a rodeo, the gold rush, a harmonica by the campfire',
+  'regarde passer les virevoltants': 'watches the tumbleweeds roll by',
+  'Le lasso': 'The lasso',
+  'Duel à midi': 'High noon',
+  Rodéo: 'Rodeo',
+  'La ruée vers l’or': 'Gold rush',
+  'Harmonica au coin du feu': 'Campfire harmonica',
+  // Dinosaures
+  Dinosaures: 'Dinosaurs',
+  'la préhistoire, un costume de dino, un T-rex qui poursuit, un œuf qui éclot, des fossiles à déterrer, un volcan qui gronde, un vol en ptérodactyle':
+    'prehistoric times, a dino costume, a chasing T-rex, a hatching egg, fossils to dig up, a rumbling volcano, a pterodactyl ride',
+  'fait coucou au brontosaure': 'waves at the brontosaurus',
+  'Poursuite avec le T-rex': 'T-rex chase',
+  'L’œuf qui éclot': 'The hatching egg',
+  'Fouille de fossiles': 'Fossil dig',
+  'Le volcan se réveille': 'The volcano wakes up',
+  'Envolée en ptérodactyle': 'Pterodactyl ride',
+  // Chevalier
+  Chevalier: 'Knight',
+  'un heaume à plumet, un château fort, un dragon qui crache du feu, une joute, l’épée dans le rocher, un pont-levis, l’adoubement':
+    'a plumed helmet, a castle, a fire-breathing dragon, a joust, the sword in the stone, a drawbridge, a knighting ceremony',
+  'monte la garde au château': 'stands guard at the castle',
+  'Face au dragon': 'Facing the dragon',
+  'La joute': 'The joust',
+  'L’épée dans le rocher': 'The sword in the stone',
+  'Le pont-levis s’abaisse': 'The drawbridge comes down',
+  'L’adoubement': 'The knighting',
+  'le 14 Juillet': 'Bastille Day',
+  'Feu d’artifice au château': 'Fireworks over the castle',
+  // Ninja
+  Ninja: 'Ninja',
+  'une cagoule de ninja, des shurikens, des bambous tranchés net, une bombe fumigène, une course sur les toits, une pastèque coupée en plein vol, des cerisiers en fleur':
+    'a ninja hood, shurikens, cleanly sliced bamboo, a smoke bomb, a rooftop run, a watermelon cut mid-air, cherry blossoms',
+  'médite sous les pétales': 'meditates under the petals',
+  'Lancer de shurikens': 'Shuriken throw',
+  'Bambous tranchés net': 'Sliced bamboo',
+  'Bombe fumigène': 'Smoke bomb',
+  'Course sur les toits': 'Rooftop run',
+  'La pastèque coupée en plein vol': 'Mid-air watermelon slice',
+  // Camping
+  Camping: 'Camping',
+  'un chapeau de randonneur, une tente qui ne veut pas tenir, des guimauves grillées au feu de camp, un ours curieux, des lucioles, une randonnée en forêt':
+    'a hiking hat, a tent that won’t stay up, marshmallows toasted on the campfire, a curious bear, fireflies, a forest hike',
+  'se repose devant sa tente': 'rests by the tent',
+  'Guimauves grillées': 'Toasted marshmallows',
+  'La tente qui ne tient pas': 'The tent that won’t stay up',
+  'Un ours curieux': 'A curious bear',
+  'La chasse aux lucioles': 'Firefly hunt',
+  'Randonnée en forêt': 'Forest hike',
+  // Super-héros
+  'Super-héros': 'Superhero',
+  'une cape qui claque au vent, un vol au-dessus de la ville, un chat à sauver dans un arbre, un train arrêté à mains nues, une météorite repoussée, une cabine téléphonique':
+    'a cape flapping in the wind, a flight over the city, a cat to rescue from a tree, a train stopped bare-handed, a meteor pushed back, a phone booth',
+  'prend la pose, la cape au vent': 'strikes a pose, cape in the wind',
+  'Envol au-dessus de la ville': 'Flight over the city',
+  'Le chat coincé dans l’arbre': 'The cat stuck in a tree',
+  'Arrêter le train à mains nues': 'Stopping the train bare-handed',
+  'Repousser la météorite': 'Pushing back the meteor',
+  'Changement de costume': 'Quick change',
 }
 
 // Un texte de thème dans la langue demandée (le français tel quel).

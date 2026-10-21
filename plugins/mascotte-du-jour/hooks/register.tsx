@@ -51,7 +51,10 @@ const LOCK_KEY = 'choosing'
 const LOCK_MS = 90_000
 // Chaque session relit le thème partagé à cet intervalle.
 const SYNC_MS = 30_000
-const HISTORY_SIZE = 5
+const HISTORY_SIZE = 10
+// Les thèmes des 7 derniers choix (un « rechoisir » en compte un) se reposent : ils ne
+// sont pas proposés à Claude, sauf celui qui a une animation pour l'occasion du jour.
+const RESTING_DAYS = 7
 // Une activité tient au moins 3 s à l'écran, pour ne pas clignoter d'un outil à l'autre,
 // et reste encore 6 s après le dernier outil avant de rendre la main au thème.
 const MIN_ACTIVITY_MS = 3_000
@@ -122,13 +125,13 @@ function paint(draw: Draw, t: number, width: number, size: Size) {
   return canvas.encode()
 }
 
-// Lit la réponse de Claude : du JSON avec le thème et une phrase.
-function parseChoice(text: string, date: string): Daily | null {
+// Lit la réponse de Claude : du JSON avec l'un des thèmes proposés et une phrase.
+function parseChoice(text: string, date: string, offered: readonly Theme[]): Daily | null {
   const json = text.match(/\{[\s\S]*\}/)?.[0]
   if (json === undefined) return null
   try {
     const { theme, phrase } = JSON.parse(json) as { theme?: unknown; phrase?: unknown }
-    if (!THEMES.some(t => t.id === theme) || typeof phrase !== 'string') return null
+    if (!offered.some(t => t.id === theme) || typeof phrase !== 'string') return null
     return { date, theme: theme as string, phrase: phrase.trim().slice(0, 90), isChosenByClaude: true }
   } catch {
     return null
@@ -142,7 +145,7 @@ const frenchPrompt = ({ date, weekday, history, list, occasion }: PromptInput) =
     `Nous sommes ${weekday} ${date}. Dans le terminal de la personne avec qui tu travailles,`,
     'un petit personnage en pixel art te représente au-dessus de sa zone de saisie.',
     'Chaque jour, c’est toi qui choisis son thème : c’est ta manière de t’exprimer, de façon fun et créative.',
-    history.length > 0 ? `Tes derniers thèmes, du plus récent au plus ancien : ${history.join(', ')}.` : 'C’est ton tout premier thème.',
+    history.length > 0 ? `Tes derniers thèmes, du plus récent au plus ancien : ${history.join(', ')} (les plus récents se reposent, ils ne sont pas dans la liste).` : 'C’est ton tout premier thème.',
     '',
     'Thèmes disponibles :',
     list,
@@ -164,7 +167,7 @@ const englishPrompt = ({ date, weekday, history, list, occasion }: PromptInput) 
     `Today is ${weekday} ${date}. In the terminal of the person you work with,`,
     'a little pixel-art character represents you above their prompt.',
     'Every day, you pick its theme: it is your way of expressing yourself, in a fun and creative way.',
-    history.length > 0 ? `Your latest themes, most recent first: ${history.join(', ')}.` : 'This is your very first theme.',
+    history.length > 0 ? `Your latest themes, most recent first: ${history.join(', ')} (the most recent ones are resting, they are not in the list).` : 'This is your very first theme.',
     '',
     'Available themes:',
     list,
@@ -186,22 +189,24 @@ async function chooseTheme($: EngineInterface, previous: Daily | null) {
   const { date, weekday } = dayOf(await $.clock.now())
   await update($, isChoosing, () => true)
 
-  const list = THEMES.map(theme => `- "${theme.id}" (${theme.emoji} ${themeText(lang, theme.name)}) : ${themeText(lang, theme.pitch)}`).join('\n')
   const stored = await $.store.get(HISTORY_KEY)
   const history = Array.isArray(stored) ? stored.filter((id): id is string => typeof id === 'string') : previous ? [previous.theme] : []
   const occasion = occasionOf(date)
+  const resting = new Set(history.slice(0, RESTING_DAYS))
+  const offered = THEMES.filter(theme => !resting.has(theme.id) || theme.id === occasion?.theme.id)
+  const list = offered.map(theme => `- "${theme.id}" (${theme.emoji} ${themeText(lang, theme.name)}) : ${themeText(lang, theme.pitch)}`).join('\n')
   const prompt = (lang === 'en' ? englishPrompt : frenchPrompt)({ date, weekday, history, list, occasion })
 
   let choice: Daily | null = null
   try {
     const reply = await $.model.complete({ model: 'sonnet', prompt, maxTokens: 300, effort: 'low' })
-    if (reply.isAnswered) choice = parseChoice(reply.text, date)
+    if (reply.isAnswered) choice = parseChoice(reply.text, date, offered)
   } catch {
     choice = null
   }
 
   // Sans réponse exploitable, on tire un thème au sort plutôt que de rester vide.
-  const fallback = THEMES[Math.floor(Math.random() * THEMES.length)]!
+  const fallback = offered[Math.floor(Math.random() * offered.length)]!
   const today = choice ?? { date, theme: fallback.id, phrase: t(lang, 'random'), isChosenByClaude: false }
   await $.store.set(STORE_KEY, today)
   await $.store.set(HISTORY_KEY, [today.theme, ...history.filter(id => id !== today.theme)].slice(0, HISTORY_SIZE))

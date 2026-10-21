@@ -1,6 +1,6 @@
 {
   "name": "mascotte-du-jour",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "An animated pixel-art Claude mascot above your prompt, with a theme of the day picked by Claude itself / Une mascotte Claude animée en pixel art au-dessus du prompt, avec un thème du jour choisi par Claude",
   "types": "./types/index.d.ts",
   "author": {

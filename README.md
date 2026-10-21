@@ -10,17 +10,18 @@ An animated pixel-art Claude mascot that lives above your prompt. **Every day, C
 
 ### Features
 
-- **12 themes**, each with an idle pose and 5 animations: Dance, Space, Pirate, Wizard, Cooking, Music, Halloween, Ocean, Winter, Garden, Sport, Arcade.
+- **18 themes**, each with an idle pose and 5 animations: Dance, Space, Pirate, Wizard, Cooking, Music, Halloween, Ocean, Winter, Garden, Sport, Arcade, Wild West, Dinosaurs, Knight, Ninja, Camping, Superhero.
+- **Variety**: the themes of the last 7 days take a rest, so Claude picks another one (except on a special day).
 - **Reacts to what Claude is doing**: reads a book while Claude reads files, types on a laptop while it edits, watches a terminal during commands, spins a globe during web searches, sends little clones when subagents run, and looks disappointed after repeated errors.
 - **A small celebration** (confetti and an optional chiptune sound) at the end of turns longer than 2 minutes.
 - **Progress line**: `▶ writes code · 6 min · 23 actions`.
 - **The sky follows the time of day**: rising sun, setting sun, then the moon and stars at night.
-- **Special days** with exclusive animations: Halloween, Christmas, New Year, Candlemas, Valentine's Day, April Fools' Day, Music Day.
+- **Special days** with exclusive animations: Halloween, Christmas, New Year, Candlemas, Valentine's Day, April Fools' Day, Music Day, Bastille Day.
 - **HD pixel art** on tall terminals: the scene is drawn up to twice as fine (rounded shapes, shiny eyes, thin rain…).
 - Works in the terminal and in the Claude Desktop **Code** tab (animated SVG).
 - English and French.
 
-![The 12 themes](docs/themes.png)
+![The 18 themes](docs/themes.png)
 
 ### Install
 

@@ -10,17 +10,18 @@ Une mascotte Claude animée en pixel art, qui vit au-dessus de ta zone de saisie
 
 ### Fonctionnalités
 
-- **12 thèmes**, chacun avec une pose d'attente et 5 animations : Danse, Espace, Pirate, Magicien, Cuisine, Musique, Halloween, Océan, Hiver, Jardin, Sport, Arcade.
+- **18 thèmes**, chacun avec une pose d'attente et 5 animations : Danse, Espace, Pirate, Magicien, Cuisine, Musique, Halloween, Océan, Hiver, Jardin, Sport, Arcade, Far West, Dinosaures, Chevalier, Ninja, Camping, Super-héros.
+- **De la variété** : les thèmes des 7 derniers jours se reposent, Claude en choisit un autre (sauf pour une date spéciale).
 - **Elle réagit à ce que fait Claude** : elle lit un livre quand Claude lit des fichiers, tape sur un portable quand il modifie du code, regarde un terminal pendant les commandes, fait tourner un globe pendant les recherches web, envoie des mini-clones quand des sous-agents partent, et a l'air déçue après plusieurs erreurs.
 - **Une petite fête** (confettis et un son rétro en option) à la fin des tours de plus de 2 minutes.
 - **Ligne de suivi** : `▶ écrit du code · 6 min · 23 actions`.
 - **Le ciel suit l'heure** : soleil levant, soleil couchant, puis la lune et les étoiles la nuit.
-- **Dates spéciales** avec des animations exclusives : Halloween, Noël, Nouvel An, Chandeleur, Saint-Valentin, 1er avril, Fête de la musique.
+- **Dates spéciales** avec des animations exclusives : Halloween, Noël, Nouvel An, Chandeleur, Saint-Valentin, 1er avril, Fête de la musique, 14 Juillet.
 - **Pixel art HD** sur les grands terminaux : la scène est dessinée jusqu'à deux fois plus finement (formes arrondies, yeux brillants, pluie fine…).
 - Fonctionne dans le terminal et dans l'onglet **Code** de Claude Desktop (SVG animé).
 - En français et en anglais.
 
-![Les 12 thèmes](docs/themes.png)
+![Les 18 thèmes](docs/themes.png)
 
 ### Installation
 

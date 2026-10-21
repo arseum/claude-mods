@@ -77,3 +77,38 @@ test('à la reprise, la bande montre le thème enregistré, jamais celui par dé
   expect(await band.find({ text: /Halloween/ })).toBeDefined()
   expect(await band.find({ text: /Danse/ })).toBeUndefined()
 })
+
+test('les thèmes des 7 derniers jours se reposent : ils ne sont pas proposés à Claude', async ($, on) => {
+  emptyBand(on)
+  mock.clock(on, { now: NOON })
+  const recent = ['halloween', 'pirate', 'espace', 'magicien', 'cuisine', 'musique', 'ocean']
+  const store = sharedStore(on, { daily: OTHER_SESSION, history: [...recent, 'hiver', 'jardin'] })
+  const prompts: string[] = []
+  on('model.complete', (_$, e) => {
+    prompts.push(e.prompt)
+    return { value: { isAnswered: true, text: '{"theme": "western", "phrase": "Yee-haw !"}', usage: { input_tokens: 0, output_tokens: 0, cache_read_input_tokens: 0, cache_creation_input_tokens: 0 } } }
+  })
+  await $.command.run({ command: 'mascotte', args: 'rechoisir', origin: { kind: 'composer' }, presentation: { isFullscreen: true, columns: 120 } })
+
+  expect(prompts.length).toBe(1)
+  for (const id of recent) expect(prompts[0]).not.toContain(`- "${id}"`)
+  expect(prompts[0]).toContain('- "hiver"')
+  expect(prompts[0]).toContain('- "western"')
+  expect((store.history as string[])[0]).toBe('western')
+  expect((store.history as string[]).length).toBe(10)
+})
+
+test('si Claude choisit quand même un thème au repos, le thème est tiré au sort parmi les autres', async ($, on) => {
+  emptyBand(on)
+  mock.clock(on, { now: NOON })
+  const recent = ['halloween', 'pirate', 'espace', 'magicien', 'cuisine', 'musique', 'ocean']
+  const store = sharedStore(on, { daily: OTHER_SESSION, history: recent })
+  on('model.complete', () => ({
+    value: { isAnswered: true, text: '{"theme": "pirate", "phrase": "Encore !"}', usage: { input_tokens: 0, output_tokens: 0, cache_read_input_tokens: 0, cache_creation_input_tokens: 0 } },
+  }))
+  await $.command.run({ command: 'mascotte', args: 'rechoisir', origin: { kind: 'composer' }, presentation: { isFullscreen: true, columns: 120 } })
+
+  const today = store.daily as { theme: string; isChosenByClaude: boolean }
+  expect(recent).not.toContain(today.theme)
+  expect(today.isChosenByClaude).toBe(false)
+})
